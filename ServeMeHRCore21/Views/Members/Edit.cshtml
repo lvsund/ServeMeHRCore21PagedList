@@ -1,0 +1,59 @@
+﻿@model ServeMeHRCore21.Models.Members
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Members</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="MemberUserid" class="control-label"></label>
+                <input asp-for="MemberUserid" class="form-control" />
+                <span asp-validation-for="MemberUserid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberFirstName" class="control-label"></label>
+                <input asp-for="MemberFirstName" class="form-control" />
+                <span asp-validation-for="MemberFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberLastName" class="control-label"></label>
+                <input asp-for="MemberLastName" class="form-control" />
+                <span asp-validation-for="MemberLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberFullName" class="control-label"></label>
+                <input asp-for="MemberFullName" class="form-control" />
+                <span asp-validation-for="MemberFullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberEmail" class="control-label"></label>
+                <input asp-for="MemberEmail" class="form-control" />
+                <span asp-validation-for="MemberEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberPhone" class="control-label"></label>
+                <input asp-for="MemberPhone" class="form-control" />
+                <span asp-validation-for="MemberPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

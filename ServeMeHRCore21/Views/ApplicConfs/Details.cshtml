@@ -1,0 +1,102 @@
+﻿@model ServeMeHRCore21.Models.ApplicConfs
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ApplicConfs</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FileSystemUpload)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FileSystemUpload)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Adactive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adactive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailConfirmation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmailConfirmation)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Modified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Modified)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppAdmin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BackAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BackAdmin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ldapconn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ldapconn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ldappath)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ldappath)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ManageHremail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ManageHremail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ManageHremailPass)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ManageHremailPass)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Smtphost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Smtphost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Smtpport)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Smtpport)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableSsl)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnableSsl)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

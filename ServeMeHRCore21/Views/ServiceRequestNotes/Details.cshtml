@@ -1,0 +1,42 @@
+﻿@model ServeMeHRCore21.Models.ServiceRequestNotes
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ServiceRequestNotes</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NoteDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NoteDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdated)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WrittenBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WrittenBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceRequestNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ServiceRequestNavigation.RequestDescription)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

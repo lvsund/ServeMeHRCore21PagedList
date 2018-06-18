@@ -1,0 +1,236 @@
+﻿@model ServeMeHRCore21.Models.ServiceRequests
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ServiceRequests</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestHeading)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestHeading)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestorId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestorId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestorFirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestorFirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestorLastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestorLastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestorPhone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestorPhone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestorEmail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestorEmail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeSubmitted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeSubmitted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeStarted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeStarted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeCompleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeCompleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MemberNavigation.MemberEmail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PriorityNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PriorityNavigation.PriorityDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestTypeNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestTypeNavigation.RequestTypeDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestTypeStepNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestTypeStepNavigation.StepDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StatusNavigation.StatusDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TeamNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TeamNavigation.TeamDescription)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Tabs - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    @*<link rel="stylesheet" href="/resources/demos/style.css">*@
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#tabs").tabs();
+        });
+    </script>
+</head>
+<body>
+
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Notes</a></li>
+            <li><a href="#tabs-2">Team Assignment History</a></li>
+            <li><a href="#tabs-3">Individual Assignment History</a></li>
+            <li><a href="#tabs-4">Request Type Step History</a></li>
+        </ul>
+        <div id="tabs-1">
+            @*@Html.ActionLink("New Comment", "Create", "ServiceRequestNotes",new { ServiceRequest = Model.Id },null )<br />*@
+
+            <table class="table">
+                <tr>
+                    <th>Date</th>
+                    <th>Who</th>
+                    <th>Comment</th>
+                </tr>
+                @foreach (var item in Model.ServiceRequestNotes)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdated)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WrittenBy)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NoteDescription)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div id="tabs-2">
+            <table class="table">
+                <tr>
+                    <th>Assigned BY</th>
+                    <th>Date Assigned</th>
+                    <th>Team</th>
+                </tr>
+                @foreach (var item in Model.TeamAssignmentHistories)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssignedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAssigned)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TeamNavigation.TeamDescription)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div id="tabs-3">
+            <table class="table">
+                <tr>
+                    <th>Assigned BY</th>
+                    <th>Assigned To</th>
+                    <th>Date Assigned</th>
+                </tr>
+                @foreach (var item in Model.IndividualAssignmentHistories)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssignedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssignedToNavigation.MemberUserid)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAssigned)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div id="tabs-4">
+            <table class="table">
+                <tr>
+                    <th>Last Updated</th>
+                    <th>Step</th>
+                </tr>
+                @foreach (var item in Model.StepHistories)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdated)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequestTypeStepNavigation.StepDescription)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</body>
+</html>

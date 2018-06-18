@@ -1,0 +1,20 @@
+﻿@*@model IEnumerable<ServeMeHRCore21.Models.FileDetails>*@
+<div class="col-md-4">
+        <form asp-controller="ServiceRequests" asp-action="UpLoadFiles" method="post"
+              enctype="multipart/form-data">
+            <input type="file" name="files" />
+            <button type="submit">Upload File</button>
+        </form>
+        <p>List of Files</p>
+        @*<ul>
+            @foreach (var item in Model.FileDetails)
+            {
+                <li>
+                    <a asp-action="Download"
+                       asp-route-filename="@item.FileName">
+                        @item.FileName
+                    </a>
+                </li>
+            }
+        </ul>*@
+    </div>

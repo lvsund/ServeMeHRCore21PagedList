@@ -1,0 +1,72 @@
+﻿@model ServeMeHRCore21.Models.Appointments
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Appointments</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MsgId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MsgId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MsgSequence)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MsgSequence)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SenderEmail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SenderEmail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipientEmail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecipientEmail)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

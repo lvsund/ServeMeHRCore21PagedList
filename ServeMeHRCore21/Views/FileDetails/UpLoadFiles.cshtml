@@ -1,0 +1,13 @@
+﻿@*@model IEnumerable<ServeMeHRCore21.Models.FileDetails>*@
+
+<h2>Upload File</h2>
+
+
+<div class="col-md-4">
+    <form asp-controller="FileDetails" asp-action="UpLoadFiles" method="post"
+          enctype="multipart/form-data">
+        <input type="file" name="files" />
+        <button type="submit">Upload File</button>
+    </form>
+
+</div>

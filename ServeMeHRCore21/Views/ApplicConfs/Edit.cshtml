@@ -1,0 +1,105 @@
+﻿@model ServeMeHRCore21.Models.ApplicConfs
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>ApplicConfs</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="FileSystemUpload" /> @Html.DisplayNameFor(model => model.FileSystemUpload)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Adactive" /> @Html.DisplayNameFor(model => model.Adactive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="EmailConfirmation" /> @Html.DisplayNameFor(model => model.EmailConfirmation)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModifiedBy" class="control-label"></label>
+                <input asp-for="ModifiedBy" class="form-control" />
+                <span asp-validation-for="ModifiedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Modified" class="control-label"></label>
+                <input asp-for="Modified" class="form-control" />
+                <span asp-validation-for="Modified" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppAdmin" class="control-label"></label>
+                <input asp-for="AppAdmin" class="form-control" />
+                <span asp-validation-for="AppAdmin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BackAdmin" class="control-label"></label>
+                <input asp-for="BackAdmin" class="form-control" />
+                <span asp-validation-for="BackAdmin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ldapconn" class="control-label"></label>
+                <input asp-for="Ldapconn" class="form-control" />
+                <span asp-validation-for="Ldapconn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ldappath" class="control-label"></label>
+                <input asp-for="Ldappath" class="form-control" />
+                <span asp-validation-for="Ldappath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ManageHremail" class="control-label"></label>
+                <input asp-for="ManageHremail" class="form-control" />
+                <span asp-validation-for="ManageHremail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ManageHremailPass" class="control-label"></label>
+                <input asp-for="ManageHremailPass" class="form-control" />
+                <span asp-validation-for="ManageHremailPass" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Smtphost" class="control-label"></label>
+                <input asp-for="Smtphost" class="form-control" />
+                <span asp-validation-for="Smtphost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Smtpport" class="control-label"></label>
+                <input asp-for="Smtpport" class="form-control" />
+                <span asp-validation-for="Smtpport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnableSsl" class="control-label"></label>
+                <input asp-for="EnableSsl" class="form-control" />
+                <span asp-validation-for="EnableSsl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

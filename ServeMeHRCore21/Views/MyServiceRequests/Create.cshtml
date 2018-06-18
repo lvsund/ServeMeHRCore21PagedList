@@ -1,0 +1,109 @@
+﻿@model ServeMeHRCore21.Models.ServiceRequests
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<<h2>Create</h2>
+
+<h4>My ServiceRequests</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<input type="hidden" asp-for="RequestTypeStep" />*@
+
+            <div class="form-group">
+                <label asp-for="RequestHeading" class="control-label"></label>
+                <input asp-for="RequestHeading" class="form-control" />
+                <span asp-validation-for="RequestHeading" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestDescription" class="control-label"></label>
+                <input asp-for="RequestDescription" class="form-control" />
+                <span asp-validation-for="RequestDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorId" class="control-label"></label>
+                <input asp-for="RequestorId" class="form-control" />
+                <span asp-validation-for="RequestorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorFirstName" class="control-label"></label>
+                <input asp-for="RequestorFirstName" class="form-control" />
+                <span asp-validation-for="RequestorFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorLastName" class="control-label"></label>
+                <input asp-for="RequestorLastName" class="form-control" />
+                <span asp-validation-for="RequestorLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorPhone" class="control-label"></label>
+                <input asp-for="RequestorPhone" class="form-control" />
+                <span asp-validation-for="RequestorPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorEmail" class="control-label"></label>
+                <input asp-for="RequestorEmail" class="form-control" />
+                <span asp-validation-for="RequestorEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTimeSubmitted" class="hidden"></label>
+                <input asp-for="DateTimeSubmitted" class="hidden" />
+                <span asp-validation-for="DateTimeSubmitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTimeStarted" class="hidden"></label>
+                <input asp-for="DateTimeStarted" class="hidden" />
+                <span asp-validation-for="DateTimeStarted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTimeCompleted" class="hidden"></label>
+                <input asp-for="DateTimeCompleted" class="hidden" />
+                <span asp-validation-for="DateTimeCompleted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team" class="control-label"></label>
+                <select asp-for="Team" class="form-control" asp-items="ViewBag.Team"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Priority" class="hidden"></label>
+                <select asp-for="Priority" class="hidden" asp-items="ViewBag.Priority"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestType" class="hidden"></label>
+                <select asp-for="RequestType" class="hidden" asp-items="ViewBag.RequestType"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestTypeStep" class="hidden"></label>
+                <select asp-for="RequestTypeStep" class="hidden" asp-items="ViewBag.RequestTypeStep"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member" class="hidden"></label>
+                <select asp-for="Member" class="hidden" asp-items="ViewBag.Member"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="hidden"></label>
+                <select asp-for="Status" class="hidden" asp-items="ViewBag.Status"></select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

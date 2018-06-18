@@ -1,0 +1,397 @@
+﻿@model ServeMeHRCore21.Models.ServiceRequests
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        if ($("#Team").val() == '0') {
+            var requestTypeDefaultValue = "<option value='0'>--Select a team first--</option>";
+            $("#RequestType").html(requestTypeDefaultValue).show();
+            var prioritiesDefaultValue = "<option value='0'>--Select a team first--</option>";
+            $("#Priority").html(prioritiesDefaultValue).show();
+            var membersDefaultValue = "<option value='0'>--Select a team first--</option>";
+            $("#Member").html(membersDefaultValue).show();
+        }
+
+        $("#Team").change(function () {
+            var selectedItemValue = $("#Team").val();
+
+            var ddlRequestTypes = $("#RequestType");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetRequestTypeByTeam", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlRequestTypes.html('');
+                    $.each(data, function (id, option) {
+                        ddlRequestTypes.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load request types!!.');
+                }
+            });
+
+            var ddlPriorities = $("#Priority");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetPrioritiesByTeam", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlPriorities.html('');
+                    $.each(data, function (id, option) {
+                        ddlPriorities.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load priorities!!.');
+                }
+            });
+
+            var ddlMembers = $("#Member");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetMembersByTeam", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlMembers.html('');
+                    $.each(data, function (id, option) {
+                        ddlMembers.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load members!!.');
+                }
+            });
+
+        });
+
+        $("#Priority").mousedown(function () {
+            var selectedItemValue = $("#Team").val();
+            var ddlPriorities = $("#Priority");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetPrioritiesByTeam", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlPriorities.html('');
+                    $.each(data, function (id, option) {
+                        ddlPriorities.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load priorities!!.');
+                }
+            });
+        });
+
+        $("#RequestType").mousedown(function () {
+            var selectedItemValue = $("#Team").val();
+            var ddlRequestTypes = $("#RequestType");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetRequestTypeByTeam", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlRequestTypes.html('');
+                    $.each(data, function (id, option) {
+                        ddlRequestTypes.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load request types!!.');
+                }
+            });
+        });
+
+        $("#Member").mousedown(function () {
+            var selectedItemValue = $("#Team").val();
+            var ddlMembers = $("#Member");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetMembersByTeam", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlMembers.html('');
+                    $.each(data, function (id, option) {
+                        ddlMembers.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load members!!.');
+                }
+            });
+        });
+
+        @*$("#RequestType").mousedown(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlRequestTypeSteps = $("#RequestTypeStep");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetRequestTypeStepsByRequestType", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlRequestTypeSteps.html('');
+                    $.each(data, function (id, option) {
+                        ddlRequestTypeSteps.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load request type steps!!.');
+                }
+            });
+        });*@
+
+        $("#RequestTypeStep").mousedown(function () {
+            var selectedItemValue = $("#RequestType").val();
+
+            var ddlRequestTypeSteps = $("#RequestTypeStep");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetRequestTypeStepsByRequestType", "ServiceRequests")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlRequestTypeSteps.html('');
+                    $.each(data, function (id, option) {
+                        ddlRequestTypeSteps.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load request type steps!!.');
+                }
+            });
+        });
+
+        $('.deleteItem').click(function (e) {
+            e.preventDefault();
+            var $ctrl = $(this);
+            if (confirm('Do you really want to delete this file?')) {
+                $.ajax({
+                    url: '@Url.Action("DeleteFile")',
+                    type: 'POST',
+                    data: { id: $(this).data('id') }
+                }).done(function (data) {
+                    if (data.Result == "OK") {
+                        $ctrl.closest('li').remove();
+                    }
+                    else if (data.Result.Message) {
+                        alert(data.Result.Message);
+                    }
+                }).fail(function () {
+                    alert("There is something wrong. Please try again.");
+                })
+
+            }
+        });
+    });
+</script>
+
+<h2>Edit</h2>
+
+<h4>TeamServiceRequests</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                @*<input asp-for="Id" class="form-control" ReadOnly="readonly"/>*@
+                <input asp-for="Id" class="form-control" readonly="@(true)" />
+
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RequestHeading" class="control-label"></label>
+                <input asp-for="RequestHeading" class="form-control" />
+                <span asp-validation-for="RequestHeading" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestDescription" class="control-label"></label>
+                <input asp-for="RequestDescription" class="form-control" />
+                <span asp-validation-for="RequestDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorId" class="control-label"></label>
+                <input asp-for="RequestorId" class="form-control" />
+                <span asp-validation-for="RequestorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorFirstName" class="control-label"></label>
+                <input asp-for="RequestorFirstName" class="form-control" />
+                <span asp-validation-for="RequestorFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorLastName" class="control-label"></label>
+                <input asp-for="RequestorLastName" class="form-control" />
+                <span asp-validation-for="RequestorLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorPhone" class="control-label"></label>
+                <input asp-for="RequestorPhone" class="form-control" />
+                <span asp-validation-for="RequestorPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestorEmail" class="control-label"></label>
+                <input asp-for="RequestorEmail" class="form-control" />
+                <span asp-validation-for="RequestorEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTimeSubmitted" class="control-label"></label>
+                <input asp-for="DateTimeSubmitted" class="form-control" />
+                <span asp-validation-for="DateTimeSubmitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTimeStarted" class="control-label"></label>
+                <input asp-for="DateTimeStarted" class="form-control" />
+                <span asp-validation-for="DateTimeStarted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTimeCompleted" class="control-label"></label>
+                <input asp-for="DateTimeCompleted" class="form-control" />
+                <span asp-validation-for="DateTimeCompleted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team" class="control-label"></label>
+                <select asp-for="Team" class="form-control" asp-items="ViewBag.Team"></select>
+                <span asp-validation-for="Team" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Priority" class="control-label"></label>
+                <select asp-for="Priority" class="form-control" asp-items="ViewBag.Priority"></select>
+                <span asp-validation-for="Priority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestType" class="control-label"></label>
+                <select asp-for="RequestType" class="form-control" asp-items="ViewBag.RequestType"></select>
+                <span asp-validation-for="RequestType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestTypeStep" class="control-label"></label>
+                <select asp-for="RequestTypeStep" class="form-control" asp-items="ViewBag.RequestTypeStep"></select>
+                <span asp-validation-for="RequestTypeStep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member" class="control-label"></label>
+                <select asp-for="Member" class="form-control" asp-items="ViewBag.Member"></select>
+                <span asp-validation-for="Member" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control" asp-items="ViewBag.Status"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<a asp-action="UpLoadFiles" asp-route-id="@Model.Id">Upload Files </a>*@
+
+@Html.ActionLink("UpLoadFiles", "UpLoadFiles", "FileDetails", new { id = @Model.Id, returncontroller = "TeamServiceRequests" }, null)
+
+@*<a asp-action="UpLoadFiles" asp-route-id="@Model.Id" asp-controller="FileDetails">Upload Files </a>*@
+
+<dt>
+    <b>List of Files</b>
+</dt>
+
+<div class="form-group">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Extension</th>
+                <th>Service Request ID</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.FileDetails)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Extension)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ServiceRequest.Id)
+                    </td>
+                    <td>
+                        <a asp-action="Download" asp-route-filename="@item.FileName" asp-controller="FileDetails">Download</a> |
+                        <a href="javascript:void(0);" data-id="@item.Id" class="deleteItem">Delete File</a>
+
+</tr>
+
+
+
+
+
+
+            }
+
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+
+@*<p>List of Files</p>
+<ul>
+    @foreach (var item in Model.FileDetails)
+    {
+        <li>
+            <a asp-action="Download"
+               asp-route-filename="@item.FileName">
+                @item.FileName
+            </a>
+        </li>
+    }
+</ul>
+
+<ul class="attachment">
+    @foreach (var item in Model.FileDetails)
+    {
+        <li>
+            <a class="title" href="/ServiceRequests/Download/?p=@(item.Id + item.Extension)&d=@item.FileName">@item.FileName</a>
+            <a href="javascript:void(0);" data-id="@item.Id" class="deleteItem">X</a>
+        </li>
+    }
+</ul>*@
+
+
+<div>
+    <a asp-action="Index" asp-controller="TeamServiceRequests">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js/jquery.validate.unobtrusive.min.js"></script>*@
+
+}

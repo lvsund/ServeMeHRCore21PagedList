@@ -1,0 +1,93 @@
+﻿@model ServeMeHRCore21.Models.Adinformations
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Adinformations</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SAmaccountName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SAmaccountName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TelephoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TelephoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GivenName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GivenName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Company)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Company)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WwWhomePage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WwWhomePage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mobile)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Appusername)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Appusername)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

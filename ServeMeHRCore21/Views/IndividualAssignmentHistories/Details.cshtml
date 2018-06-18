@@ -1,0 +1,42 @@
+﻿@model ServeMeHRCore21.Models.IndividualAssignmentHistories
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>IndividualAssignmentHistories</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AssignedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAssigned)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateAssigned)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignedToNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AssignedToNavigation.MemberEmail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceRequestNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ServiceRequestNavigation.RequestDescription)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

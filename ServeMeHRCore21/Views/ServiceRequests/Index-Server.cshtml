@@ -1,0 +1,159 @@
+﻿@model IEnumerable<ServeMeHRCore21.Models.ServiceRequests>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h2>Service Requests</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+@using (Html.BeginForm())
+{
+
+<p>
+    <label >Service Request Status: </label>
+    @Html.DropDownList("StatusType", "Select a Value")
+</p>
+    @*<p>
+        Find by Keyword or Phrase in Heading Or Description: @Html.TextBox("SearchString")
+    </p>*@
+    <p>
+        <input type="submit" value="Refresh Status" />
+    </p>
+
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+       // var StatusType = $("#StatusType").val();
+        if ($.fn.DataTable.isDataTable('#tblsr')) {
+            $('#tblsr').dataTable().fnDestroy();
+            $('#tblsr').dataTable().empty();
+
+        }
+
+        var complete = $('#tblsr').DataTable(
+            {
+
+                "serverSide": true,
+                "destroy": true,
+                "processing": true,
+                "stateSave": true,
+                //"sortable": true,
+                //'sorting': [[1, 'desc']],
+                "ajax":
+                    {
+                        url: "/ServiceRequests/SRList",
+                        method: "POST",
+                        "data":  {
+                            "StatusType": $("#StatusType").val()
+                           //"StatusType": "Open"
+                            
+                        }
+
+                    },
+
+
+                "columns": [
+                    { "data": "id"},
+                    { "data": "dateTimeSubmitted"},
+                    { "data": "requestHeading" },
+                    { "data": "requestorFirstName" },
+                    { "data": "requestorLastName" },
+                    { "data": "requestorPhone" },
+                    { "data": "requestorEmail" },
+
+
+                    {
+                        "title": "",
+                        "data": "id",
+                        "searchable": false,
+                        "sortable": false,
+
+
+
+                        "render": function (data, type, full, meta) {
+                            return '<a href="@Url.Action("Edit", "ServiceRequests")?id=' + data + '" class="editServiceRequests">Edit</a> | <a href="@Url.Action("Details", "ServiceRequests")?id=' + data + '" class="detailsServiceRequests">Details</a> | <a href="@Url.Action("Delete", "ServiceRequests")?id=' + data + '" class="deleteServiceRequests">Delete</a> | <a href="@Url.Action("Create", "ServiceRequestNotes")?id=' + data + '" class="addServiceRequestNotes">Add Comment</a>';
+                                }
+
+
+
+
+                           @*return '<a class="btn btn-info" href="/ReportsToRecords/Edit/' + full.id + '">Edit</a>';*@
+
+                    }
+
+
+
+                ]
+                , "order": [[1, "desc"]]
+
+            }
+
+        );
+
+        /// Following code is for filter input to apply filter only on Enter
+        var itm = $("#tblsr_filter input")
+
+        itm.unbind();
+        itm.keyup(function (e) {
+            //enter or tab
+            if (e.keyCode == 13) {
+                complete.search(this.value).draw();
+            }
+        });
+
+
+    });
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary list-panel" id="list-panel">
+            <div class="panel-heading list-panel-heading">
+                <h1 class="panel-title list-panel-title"> ServiceRequests</h1>
+            </div>
+            <div class="panel-body">
+                <table class="table" id="tblsr">
+                    <thead>
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Date Time Submitted
+                            </th>
+
+                            <th>
+                                RequestHeading
+                            </th>
+                            <th>
+                                RequestorFirstName
+                            </th>
+                            <th>
+                                RequestorLastName
+                            </th>
+                            <th>
+                                RequestorPhone
+                            </th>
+                            <th>
+                                RequestorEmail
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
