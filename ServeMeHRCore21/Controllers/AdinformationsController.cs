@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using ServeMeHRCore21.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net;
+using Microsoft.Extensions.FileProviders;
+using X.PagedList;
+using X.PagedList.Mvc.Core;
 
 namespace ServeMeHRCore21.Controllers
 {
@@ -18,11 +28,82 @@ namespace ServeMeHRCore21.Controllers
             _context = context;
         }
 
+        //// GET: Adinformations
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Adinformations.ToListAsync());
+        //}
+
         // GET: Adinformations
-        public async Task<IActionResult> Index()
+        public ViewResult Index(string StatusType, string sortOrder, string currentFilter, string searchString, int? page)
         {
-            return View(await _context.Adinformations.ToListAsync());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.SnSortParm = sortOrder == "Sn" ? "Sn" : "Sn";
+            ViewBag.IdSortParm = sortOrder == "Id" ? "Id_desc" : "Id";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+
+
+            IQueryable<Adinformations> adInformations = _context.Adinformations;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                adInformations = adInformations.Where(s => s.Id.ToString().ToLower().Contains(searchString.ToLower())
+                || s.SAmaccountName != null && s.SAmaccountName.ToString().ToLower().Contains(searchString.ToLower())
+                || s.DisplayName != null && s.DisplayName.ToLower().Contains(searchString.ToLower())
+                || s.Mail != null && s.Mail.ToLower().Contains(searchString.ToLower())
+                || s.Title != null && s.Title.ToLower().Contains(searchString.ToLower())
+                || s.TelephoneNumber != null && s.TelephoneNumber.ToLower().Contains(searchString.ToLower())
+                || s.GivenName != null && s.GivenName.ToLower().Contains(searchString.ToLower())
+                || s.Sn != null && s.Sn.ToLower().Contains(searchString.ToLower())
+                || s.Company != null && s.Company.ToLower().Contains(searchString.ToLower())
+                || s.WwWhomePage != null && s.WwWhomePage.ToLower().Contains(searchString.ToLower())
+                || s.Mobile != null && s.Mobile.ToLower().Contains(searchString.ToLower())
+                || s.Cn != null && s.Cn.ToLower().Contains(searchString.ToLower())
+                || s.Appusername != null && s.Appusername.ToLower().Contains(searchString.ToLower())
+
+                );
+
+            }
+
+            switch (sortOrder)
+            {
+                case "Id":
+                   adInformations = adInformations.OrderBy(s => s.Id);
+                    break;
+
+                case "Sn":
+                    adInformations = adInformations.OrderBy(s => s.Sn);
+                    break;
+
+
+
+                default:
+                    adInformations = adInformations.OrderBy(s => s.Sn);
+                    break;
+            }
+
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            //var onePageOfRequests = serviceRequests.ToPagedList(pageNumber, pageSize);
+            //  ViewBag.OnePageOfRequests = onePageOfRequests;
+            //  return View();
+            return View(adInformations.ToPagedList(pageNumber, pageSize));
+
         }
+
+
 
         // GET: Adinformations/Details/5
         public async Task<IActionResult> Details(int? id)
