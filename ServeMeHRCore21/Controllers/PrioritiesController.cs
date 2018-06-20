@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using ServeMeHRCore21.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net;
+using Microsoft.Extensions.FileProviders;
+using X.PagedList;
+using X.PagedList.Mvc.Core;
 
 namespace ServeMeHRCore21.Controllers
 {
@@ -18,9 +28,43 @@ namespace ServeMeHRCore21.Controllers
             _context = context;
         }
 
+        //// GET: Priorities
+        //public async Task<IActionResult> Index(string SelectedTeam)
+        //{
+        //    IEnumerable<SelectListItem> teamitems = _context.Teams.Select(c => new SelectListItem
+        //    {
+        //        //Selected = c.Id == 1,
+        //        Value = c.TeamDescription,
+        //        Text = c.TeamDescription
+        //    });
+        //    ViewBag.SelectedTeam = teamitems;
+
+        //    var serveMeHRCoreContext = _context.Priorities
+        //        .Include(p => p.TeamNavigation)
+        //        .Where(p => p.TeamNavigation.TeamDescription == SelectedTeam)
+        //        ;
+        //    return View(await serveMeHRCoreContext.ToListAsync());
+        //}
+
+
         // GET: Priorities
-        public async Task<IActionResult> Index(string SelectedTeam)
+        public ViewResult Index(string SelectedTeam, string sortOrder, string currentFilter, string searchString, int? page)
+
         {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "Id" : "";
+            ViewBag.pdSortParm = sortOrder == "PriorityDescription" ? "PriorityDescription" : "PriorityDescription";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
             IEnumerable<SelectListItem> teamitems = _context.Teams.Select(c => new SelectListItem
             {
                 //Selected = c.Id == 1,
@@ -29,13 +73,52 @@ namespace ServeMeHRCore21.Controllers
             });
             ViewBag.SelectedTeam = teamitems;
 
-            var serveMeHRCoreContext = _context.Priorities
+
+
+            IQueryable<Priorities> priorities = _context.Priorities
                 .Include(p => p.TeamNavigation)
                 .Where(p => p.TeamNavigation.TeamDescription == SelectedTeam)
                 ;
-            return View(await serveMeHRCoreContext.ToListAsync());
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                priorities = priorities.Where(s => s.Id.ToString().ToLower().Contains(searchString.ToLower())
+                || s.PriorityDescription != null && s.PriorityDescription.ToString().ToLower().Contains(searchString.ToLower())
+                || s.LastUpdated != null && s.LastUpdated.ToString("yyyy-MM-dd").ToLower().Contains(searchString.ToLower())
+ 
+                );
+
+            }
+
+            switch (sortOrder)
+            {
+                case "Id":
+                    priorities = priorities.OrderBy(s => s.Id);
+                    break;
+
+                case "PriorityDescription":
+                    priorities = priorities.OrderBy(s => s.PriorityDescription);
+                    break;
+
+
+
+                default:
+                    priorities = priorities.OrderBy(s => s.Id);
+                    break;
+            }
+
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            //var onePageOfRequests = serviceRequests.ToPagedList(pageNumber, pageSize);
+            //  ViewBag.OnePageOfRequests = onePageOfRequests;
+            //  return View();
+            return View(priorities.ToPagedList(pageNumber, pageSize));
+
         }
 
+
+ 
         // GET: Priorities/Details/5
         public async Task<IActionResult> Details(int? id)
         {

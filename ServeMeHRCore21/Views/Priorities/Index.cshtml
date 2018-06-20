@@ -1,15 +1,15 @@
-﻿@model IEnumerable<ServeMeHRCore21.Models.Priorities>
-
+﻿@*@model IEnumerable<ServeMeHRCore21.Models.Priorities>*@
+@using X.PagedList;
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<ServeMeHRCore21.Models.Priorities>
 @{
     ViewData["Title"] = "Index";
 }
-
 <h2>Priorities</h2>
-
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
 @using (Html.BeginForm())
 {
 
@@ -25,7 +25,6 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary list-panel" id="list-panel">
@@ -40,16 +39,20 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.PriorityDescription)
+                                @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.IdSortParm })
+                            </th>
+
+                            <th>
+                                @Html.ActionLink("PriorityDescription", "Index", new { sortOrder = ViewBag.pdSortParm })
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LastUpdated)
+                                LastUpdated
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Active)
+                                Active
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.TeamNavigation)
+                                Team
                             </th>
                             <th></th>
                         </tr>
@@ -58,6 +61,9 @@
                         @foreach (var item in Model)
                         {
                             <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.PriorityDescription)
                                 </td>
@@ -83,18 +89,23 @@
         </div>
     </div>
 </div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-@*@section Scripts
-    {
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),PagedListRenderOptions.ClassicPlusFirstAndLast)
 
-    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
+                    @*@section Scripts
+                            {
 
-            $('#priorities-data-table').DataTable();
-        });
-    </script>
-}*@
+                            <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+                            <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+                            <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+
+                                    $('#priorities-data-table').DataTable();
+                                });
+                            </script>
+                        }*@

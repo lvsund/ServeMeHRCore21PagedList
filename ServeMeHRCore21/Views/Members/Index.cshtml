@@ -1,15 +1,29 @@
-﻿@model IEnumerable<ServeMeHRCore21.Models.Members>
+﻿@*@model IEnumerable<ServeMeHRCore21.Models.Members>*@
+@using X.PagedList;
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<ServeMeHRCore21.Models.Members>
 
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewData["Title"] = "Index";
 }
-
 <h2>Members</h2>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@using (Html.BeginForm("Index", "Members", FormMethod.Get))
+{
 
+
+    <p>
+        Search: @Html.TextBox("SearchString")
+    </p>
+    <p>
+        <input type="submit" value="Search" />
+    </p>
+
+}
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary list-panel" id="list-panel">
@@ -24,26 +38,25 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Id)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.MemberUserid)
+                                @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.IdSortParm })
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MemberFirstName)
+                                MemberUserid
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MemberLastName)
+                                MemberFirstName
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MemberFullName)
+                                @Html.ActionLink("MemberLastName", "Index", new { sortOrder = ViewBag.mlnSortParm })
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MemberEmail)
+                                MemberFullName
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MemberPhone)
+                                MemberEmail
+                            </th>
+                            <th>
+                                MemberPhone
                             </th>
                             <th></th>
                         </tr>
@@ -87,17 +100,23 @@
     </div>
 </div>
 
-@*@section Scripts
-    {
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),PagedListRenderOptions.ClassicPlusFirstAndLast)
 
-    <script type="text/javascript">
-        $(document).ready(function () {
 
-            $('#members-data-table').DataTable();
-        });
-    </script>
-}*@
+                    @*@section Scripts
+                            {
+
+                            <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+                            <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+                            <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+
+                                    $('#members-data-table').DataTable();
+                                });
+                            </script>
+                        }*@

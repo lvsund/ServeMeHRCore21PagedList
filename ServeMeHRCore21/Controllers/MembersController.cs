@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using ServeMeHRCore21.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net;
+using Microsoft.Extensions.FileProviders;
+using X.PagedList;
+using X.PagedList.Mvc.Core;
 
 namespace ServeMeHRCore21.Controllers
 {
@@ -18,11 +28,75 @@ namespace ServeMeHRCore21.Controllers
             _context = context;
         }
 
+        //// GET: Members
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Members.ToListAsync());
+        //}
+
         // GET: Members
-        public async Task<IActionResult> Index()
+        public ViewResult Index(string StatusType, string sortOrder, string currentFilter, string searchString, int? page)
         {
-            return View(await _context.Members.ToListAsync());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.mlnSortParm = sortOrder == "MemberLastName" ? "MemberLastName" : "MemberLastName";
+            ViewBag.IdSortParm = sortOrder == "Id" ? "Id_desc" : "Id";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+
+
+            IQueryable<Members> members = _context.Members;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                members = members.Where(s => s.Id.ToString().ToLower().Contains(searchString.ToLower())
+                || s.MemberUserid != null && s.MemberUserid.ToString().ToLower().Contains(searchString.ToLower())
+                || s.MemberFirstName != null && s.MemberFirstName.ToLower().Contains(searchString.ToLower())
+                || s.MemberLastName != null && s.MemberLastName.ToLower().Contains(searchString.ToLower())
+                || s.MemberFullName != null && s.MemberFullName.ToLower().Contains(searchString.ToLower())
+                || s.MemberEmail != null && s.MemberEmail.ToLower().Contains(searchString.ToLower())
+                || s.MemberPhone != null && s.MemberPhone.ToLower().Contains(searchString.ToLower())
+
+                );
+
+            }
+
+            switch (sortOrder)
+            {
+                case "Id":
+                    members = members.OrderBy(s => s.Id);
+                    break;
+
+                case "MemberLastName":
+                    members = members.OrderBy(s => s.MemberLastName);
+                    break;
+
+
+
+                default:
+                    members = members.OrderBy(s => s.MemberLastName);
+                    break;
+            }
+
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            //var onePageOfRequests = serviceRequests.ToPagedList(pageNumber, pageSize);
+            //  ViewBag.OnePageOfRequests = onePageOfRequests;
+            //  return View();
+            return View(members.ToPagedList(pageNumber, pageSize));
+
         }
+
 
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int? id)
