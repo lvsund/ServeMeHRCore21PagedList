@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using ServeMeHRCore21.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net;
+using Microsoft.Extensions.FileProviders;
+using X.PagedList;
+using X.PagedList.Mvc.Core;
 
 namespace ServeMeHRCore21.Controllers
 {
@@ -18,10 +28,68 @@ namespace ServeMeHRCore21.Controllers
             _context = context;
         }
 
-        // GET: Teams
-        public async Task<IActionResult> Index()
+        //// GET: Teams
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Teams.ToListAsync());
+        //}
+
+        // GET: teams
+        public ViewResult Index( string sortOrder, string currentFilter, string searchString, int? page)
         {
-            return View(await _context.Teams.ToListAsync());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.tdSortParm = sortOrder == "TeamDescription" ? "TeamDescription" : "TeamDescription";
+            ViewBag.IdSortParm = sortOrder == "Id" ? "Id_desc" : "Id";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+
+
+            IQueryable<Teams> teams = _context.Teams;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                teams = teams.Where(s => s.Id.ToString().ToLower().Contains(searchString.ToLower())
+                || s.TeamDescription != null && s.TeamDescription.ToLower().Contains(searchString.ToLower())
+                || s.TeamEmailAddress != null && s.TeamEmailAddress.ToLower().Contains(searchString.ToLower())
+                );
+
+            }
+
+            switch (sortOrder)
+            {
+                case "Id":
+                    teams = teams.OrderBy(s => s.Id);
+                    break;
+
+                case "TeamDescription":
+                    teams = teams.OrderBy(s => s.TeamDescription);
+                    break;
+
+
+
+                default:
+                    teams = teams.OrderBy(s => s.TeamDescription);
+                    break;
+            }
+
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            //var onePageOfRequests = serviceRequests.ToPagedList(pageNumber, pageSize);
+            //  ViewBag.OnePageOfRequests = onePageOfRequests;
+            //  return View();
+            return View(teams.ToPagedList(pageNumber, pageSize));
+
         }
 
         // GET: Teams/Details/5

@@ -6,9 +6,9 @@
 
 <h2>Status Types</h2>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 
 <div class="col-md-12">
     <div class="panel panel-primary list-panel" id="list-panel">
@@ -26,22 +26,22 @@
                         <th>
                             @Html.DisplayNameFor(model => model.StatusTypeDescription)
                         </th>
-                        <th></th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StatusTypeDescription)
-                            </td>
-                            <td>
-                                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StatusTypeDescription)
+                        </td>
+                        @*<td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </td>*@
+                    </tr>
                     }
                 </tbody>
             </table>

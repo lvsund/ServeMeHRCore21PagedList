@@ -1,15 +1,28 @@
-﻿@model IEnumerable<ServeMeHRCore21.Models.Teams>
+﻿@*@model IEnumerable<ServeMeHRCore21.Models.Teams>*@
+@using X.PagedList;
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<ServeMeHRCore21.Models.Teams>
 
 @{
     ViewData["Title"] = "Index";
 }
-
 <h2>Teams</h2>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@using (Html.BeginForm("Index", "Teams", FormMethod.Get))
+{
 
+
+    <p>
+        Search: @Html.TextBox("SearchString")
+    </p>
+    <p>
+        <input type="submit" value="Search" />
+    </p>
+
+}
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary list-panel" id="list-panel">
@@ -24,10 +37,13 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.TeamDescription)
+                                @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.IdSortParm })
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.TeamEmailAddress)
+                                @Html.ActionLink("TeamDescription", "Index", new { sortOrder = ViewBag.tdSortParm })
+                            </th>
+                            <th>
+                                TeamEmailAddress
                             </th>
                             <th></th>
                         </tr>
@@ -36,6 +52,9 @@
                         @foreach (var item in Model)
                         {
                             <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TeamDescription)
                                 </td>
@@ -56,16 +75,23 @@
     </div>
 </div>
 
-@*@section Scripts
-    {
-    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    <script type="text/javascript">
-        $(document).ready(function () {
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),PagedListRenderOptions.ClassicPlusFirstAndLast)
 
-            $('#teams-data-table').DataTable();
-        });
-    </script>
-}*@
+
+
+                    @*@section Scripts
+                            {
+                            <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+                            <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+                            <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+
+                                    $('#teams-data-table').DataTable();
+                                });
+                            </script>
+                        }*@
