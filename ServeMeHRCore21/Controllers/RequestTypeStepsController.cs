@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using ServeMeHRCore21.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net;
+using Microsoft.Extensions.FileProviders;
+using X.PagedList;
+using X.PagedList.Mvc.Core;
 
 namespace ServeMeHRCore21.Controllers
 {
@@ -18,9 +28,40 @@ namespace ServeMeHRCore21.Controllers
             _context = context;
         }
 
-        // GET: RequestTypeSteps
-        public async Task<IActionResult> Index(string SelectedRequestType)
+        //// GET: RequestTypeSteps
+        //public async Task<IActionResult> Index(string SelectedRequestType)
+        //{
+        //    IEnumerable<SelectListItem> requestTypeitems = _context.RequestTypes.Select(c => new SelectListItem
+        //    {
+        //        //Selected = c.Id == 1,
+        //        Value = c.RequestTypeDescription,
+        //        Text = c.RequestTypeDescription
+        //    });
+        //    ViewBag.SelectedRequestType = requestTypeitems;
+
+        //    var serveMeHRCoreContext = _context.RequestTypeSteps
+        //        .Include(r => r.RequestTypeNavigation)
+        //        .Where(r => r.RequestTypeNavigation.RequestTypeDescription == SelectedRequestType);
+        //    return View(await serveMeHRCoreContext.ToListAsync());
+        //}
+
+        public ViewResult Index(string SelectedRequestType, string sortOrder, string currentFilter, string searchString, int? page)
+
         {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "Id" : "";
+            ViewBag.sdSortParm = sortOrder == "StepDescription" ? "StepDescription" : "StepDescription";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
+
             IEnumerable<SelectListItem> requestTypeitems = _context.RequestTypes.Select(c => new SelectListItem
             {
                 //Selected = c.Id == 1,
@@ -29,11 +70,52 @@ namespace ServeMeHRCore21.Controllers
             });
             ViewBag.SelectedRequestType = requestTypeitems;
 
-            var serveMeHRCoreContext = _context.RequestTypeSteps
-                .Include(r => r.RequestTypeNavigation)
-                .Where(r => r.RequestTypeNavigation.RequestTypeDescription == SelectedRequestType);
-            return View(await serveMeHRCoreContext.ToListAsync());
+
+
+
+
+            IQueryable<RequestTypeSteps> requestTypeSteps = _context.RequestTypeSteps
+                .Include(p => p.RequestTypeNavigation)
+                .Where(p => p.RequestTypeNavigation.RequestTypeDescription == SelectedRequestType);
+                ;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                requestTypeSteps = requestTypeSteps.Where(s => s.Id.ToString().ToLower().Contains(searchString.ToLower())
+                || s.StepDescription != null && s.StepDescription.ToString().ToLower().Contains(searchString.ToLower())
+                || s.LastUpdated != null && s.LastUpdated.Value.ToString("yyyy-MM-dd").ToLower().Contains(searchString.ToLower())
+
+                );
+
+            }
+
+            switch (sortOrder)
+            {
+                case "Id":
+                    requestTypeSteps = requestTypeSteps.OrderBy(s => s.Id);
+                    break;
+
+                case "RequestTypeDescription":
+                    requestTypeSteps = requestTypeSteps.OrderBy(s => s.StepDescription);
+                    break;
+
+
+
+                default:
+                    requestTypeSteps = requestTypeSteps.OrderBy(s => s.Id);
+                    break;
+            }
+
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            //var onePageOfRequests = serviceRequests.ToPagedList(pageNumber, pageSize);
+            //  ViewBag.OnePageOfRequests = onePageOfRequests;
+            //  return View();
+            return View(requestTypeSteps.ToPagedList(pageNumber, pageSize));
+
         }
+
 
         // GET: RequestTypeSteps/Details/5
         public async Task<IActionResult> Details(int? id)
