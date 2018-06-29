@@ -1,3 +1,0 @@
-ServeMeHR Documentation
-
-# Introduction
